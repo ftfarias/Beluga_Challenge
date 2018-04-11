@@ -4,7 +4,7 @@ Answer for my Data Engineering Challenge
 
 ## Internal Structure
 
-* A directory structure were created with CookieCutter template (https://github.com/audreyr/cookiecutter)
+* A directory structure were created with CookieCutter template (https://drivendata.github.io/cookiecutter-data-science)
 
 ## Requirements
 
@@ -93,6 +93,118 @@ root
 
 merged = fact.join(dim, fact.product == dim.product)
 merged.take(10)
+
+### Gender
+
+The gender field has too many overlapping values, this needs to be reduced to field with at most 5 different values (use your own criteria to deduce this)
+
+
+>>> gender = flat.select('gender').distinct().count()
+87
+
+>>> genders = flat.groupBy('gender').count().sort('count').cache()
+>>> genders.show(100)
+
++--------------------+-------+
+|              gender|  count|
++--------------------+-------+
+|Femenino/Infantil...|      1|
+|Bebés/Infantil/Ni...|      1|
+|Femenino/Infantil...|      2|
+|Bebés/Femenino/Ma...|      2|
+|Femenino/Infantil...|      3|
+|  Bebés/Unisex/girls|      4|
+|Infantil/Unisex/U...|      4|
+|Bebés/Infantil/Un...|      4|
+|Bebés/Femenino/girls|      4|
+|Bebés/Infantil/Un...|      6|
+|Masculino/Unisex/...|      6|
+|Masculino/Niñas/N...|      7|
+|Infantil/Unisex I...|      7|
+|Infantil/Niñas/Un...|      8|
+|       Infantil/boys|      9|
+|Niños/Unisex Infa...|      9|
+|Bebés/Niños/Unise...|     11|
+|         Bebés/Niños|     11|
+|Femenino/Infantil...|     12|
+|Bebés/Infantil/girls|     12|
+|     Bebés/Masculino|     13|
+|Femenino/Unisex I...|     13|
+|Femenino/Unisex/b...|     15|
+|Bebés/Femenino/In...|     15|
+|         Unisex/boys|     17|
+|Bebés/Infantil/Ni...|     17|
+|Infantil/Niñas/Ni...|     17|
+|      Bebés/Infantil|     18|
+|  Infantil/Masculino|     19|
+|Bebés/Femenino/Ma...|     22|
+|Bebés/Infantil/Ni...|     22|
+|     Infantil/Unisex|     23|
+|    Bebés/boys/girls|     23|
+|        Bebés/Unisex|     29|
+|Bebés/Unisex Infa...|     29|
+|   Femenino/Infantil|     30|
+|Infantil/Niños/Un...|     33|
+|      Bebés/Femenino|     38|
+|Femenino/Infantil...|     39|
+|Femenino/Infantil...|     43|
+|Bebés/Infantil/Niños|     43|
+|Femenino/Masculin...|     45|
+| Femenino/boys/girls|     46|
+|          Bebés/boys|     47|
+|Femenino/Masculin...|     50|
+|Femenino/Unisex/g...|     52|
+|Bebés/Infantil/Ni...|     52|
+|Unisex/Unisex Inf...|     56|
+|         Bebés/Niñas|     59|
+|Bebés/Unisex/boys...|     61|
+|Bebés/Infantil/Un...|     71|
+| Bebés/Infantil/boys|     96|
+|Bebés/Infantil/Niñas|     99|
+|Bebés/Masculino/boys|    102|
+|   Unisex/boys/girls|    124|
+|        Niños/Unisex|    133|
+|         Bebés/girls|    134|
+|          boys/girls|    141|
+|      Infantil/Niños|    153|
+|      Infantil/girls|    170|
+|      Infantil/Niñas|    229|
+|Femenino/Masculin...|    370|
+|Bebés/Femenino/Ma...|    401|
+|    Masculino/Unisex|    425|
+|     Masculino/Niños|    464|
+|     Femenino/Unisex|    484|
+|      Masculino/boys|    485|
+|Femenino/Masculin...|    547|
+|      Femenino/girls|    704|
+|      Femenino/Niñas|   1030|
+|     Unisex Infantil|   1149|
+|  Femenino/Masculino|   1306|
+|Femenino/Masculin...|   4661|
+|               Bebés|   8145|
+|                boys|  15343|
+|            Infantil|  17160|
+|               girls|  18596|
+|               Niños|  22948|
+|               Niñas|  32816|
+|              Unisex| 105819|
+|              menino|1021441|
+|             unissex|1116933|
+|           Masculino|1154544|
+|              menina|1816657|
+|            Femenino|2720894|
+|           masculino|4405208|
+|            feminino|8847235|
++--------------------+-------+
+
+Using the count information, the five groups are:
+
+masculino
+feminino
+unisex
+infantil
+bebes
+
 
 ## Running scripts:
 

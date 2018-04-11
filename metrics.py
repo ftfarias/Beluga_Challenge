@@ -7,6 +7,6 @@ spark = SparkSession \
     .getOrCreate()
 
 
-flat = spark.read.load("merged2.parquet", format="parquet")
+flat = spark.read.load("data/flat.parquet", format="parquet")
 flat.show(10)
 
