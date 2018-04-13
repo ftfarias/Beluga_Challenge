@@ -164,8 +164,10 @@ bebes
 
 * ~/Downloads/spark/bin/spark-submit create_flat_file.py --master local[*]
 
-```
+
 The result table can be checked in the data file:
+
+```
 Felipes-iMac:Beluga_Challenge ftfarias$ ll data/flat.parquet/
 total 8
 drwxr-xr-x   14 ftfarias  staff    476 Apr 11 10:03 .
@@ -182,4 +184,14 @@ drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180210
 drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180211
 drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180212
 drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180213
+
+Felipes-iMac:Beluga_Challenge ftfarias$ head data/flat.json/part-00199-d5fd9bc3-8743-4748-a22a-7e21cb9df617-c000.json
+{"product":422,"_c0":26894,"id":2451,"view_date3":20180207,"currency":0,"device":23,"store":6,"company":1,"view_date10":"2018-02-07T00:00:00.000-02:00","gross_total_volume":0.0,"product_net_cost":0.0,"product_net_revenue":0.0,"gross_merchandise_volume":0.0,"item_sold":0.0,"pageviews":1,"is_banner":0.0,"is_market_place":0,"current_price_range":"09. 300-400","cmc_division":"Women Apparel","cmc_business_unit":"Women","gender_fixed":"feminino","order_date_iso":"2018-02-07T00:00:00.000-02:00","absolute_margin":0.0}
+{"product":422,"_c0":80035,"id":89,"view_date3":20180205,"currency":0,"device":23,"store":308,"company":1,"view_date10":"2018-02-05T00:00:00.000-02:00","gross_total_volume":0.0,"product_net_cost":0.0,"product_net_revenue":0.0,"gross_merchandise_volume":0.0,"item_sold":0.0,"pageviews":1,"is_banner":0.0,"is_market_place":0,"current_price_range":"09. 300-400","cmc_division":"Women Apparel","cmc_business_unit":"Women","gender_fixed":"feminino","order_date_iso":"2018-02-05T00:00:00.000-02:00","absolute_margin":0.0}
+{"product":422,"_c0":246907,"id":47,"view_date3":20180206,"currency":0,"device":1,"store":6,"company":1,"view_date10":"2018-02-06T00:00:00.000-02:00","gross_total_volume":0.0,"product_net_cost":0.0,"product_net_revenue":0.0,"gross_merchandise_volume":0.0,"item_sold":0.0,"pageviews":1,"is_banner":0.0,"is_market_place":0,"current_price_range":"09. 300-400","cmc_division":"Women Apparel","cmc_business_unit":"Women","gender_fixed":"feminino","order_date_iso":"2018-02-06T00:00:00.000-02:00","absolute_margin":0.0}
+{"product":422,"_c0":30335,"id":86,"view_date3":20180204,"currency":0,"device":1,"store":6,"company":1,"view_date10":"2018-02-04T00:00:00.000-02:00","gross_total_volume":0.0,"product_net_cost":0.0,"product_net_revenue":0.0,"gross_merchandise_volume":0.0,"item_sold":0.0,"pageviews":1,"is_banner":0.0,"is_market_place":0,"current_price_range":"09. 300-400","cmc_division":"Women Apparel","cmc_business_unit":"Women","gender_fixed":"feminino","order_date_iso":"2018-02-04T00:00:00.000-02:00","absolute_margin":0.0}
+{"product":422,"_c0":218458,"id":2342,"view_date3":20180206,"currency":0,"device":10,"store":6,"company":1,"view_date10":"2018-02-06T00:00:00.000-02:00","gross_total_volume":0.0,"product_net_cost":0.0,"product_net_revenue":0.0,"gross_merchandise_volume":0.0,"item_sold":0.0,"pageviews":2,"is_banner":0.0,"is_market_place":0,"current_price_range":"09. 300-400","cmc_division":"Women Apparel","cmc_business_unit":"Women","gender_fixed":"feminino","order_date_iso":"2018-02-06T00:00:00.000-02:00","absolute_margin":0.0}
+{"product":422,"_c0":252650,"id":3,"view_date3":20180208,"currency":20,"device":23,"store":6,"company":1,"view_date10":"2018-02-08T00:00:00.000-02:00","gross_total_volume":149.99,"product_net_cost":124.97,"product_net_revenue":109.12,"gross_merchandise_volume":149.99,"item_sold":1.0,"pageviews":0,"is_banner":0.0,"is_market_place":0,"current_price_range":"09. 300-400","cmc_division":"Women Apparel","cmc_business_unit":"Women","gender_fixed":"feminino","order_date_iso":"2018-02-08T00:00:00.000-02:00","average_cost_per_item":124.97,"absolute_margin":15.849999999999994,"percentage_margin":0.12683043930543325}
+
+
 ```

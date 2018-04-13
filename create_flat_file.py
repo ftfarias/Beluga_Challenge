@@ -55,8 +55,35 @@ flat = flat.select('*', F.unix_timestamp(flat['order_date'].cast('string'), 'yyy
 flat = flat.withColumn('average_cost_per_item', flat.product_net_cost / flat.item_sold)
 flat = flat.withColumn('absolute_margin', flat.product_net_cost - flat.product_net_revenue)
 flat = flat.withColumn('percentage_margin', flat.absolute_margin / flat.product_net_cost)
+flat = flat.withColumn('average_price_per_item', flat.product_net_revenue / flat.item_sold)
 
-# flat = flat.withColumn('average_price_per_item', flat. / flat.)
+avg_day = flat.groupBy('order_date_iso').agg(F.avg('average_price_per_item'))
+
+avg_day = avg_day.withColumn('next_day', F.date_add(avg_day.order_date_iso, 1).cast('timestamp')).cache()
+avg_day = avg_day.withColumnRenamed('avg(average_price_per_item)', 'average_price_per_item_yesterday')
+
+flat = flat.join(avg_day, flat.order_date_iso == avg_day.next_day).drop(avg_day.next_day)
+
+flat = flat.withColumn('var_average_price_per_item', (flat.average_price_per_item / flat.average_price_per_item_yesterday) - 1)
+
+"""
+avg_day.show()
++-------------------+--------------------------------+-------------------+      
+|     order_date_iso|average_price_per_item_yesterday|           next_day|
++-------------------+--------------------------------+-------------------+
+|2018-02-05 00:00:00|              3753.2424873274276|2018-02-06 00:00:00|
+|2018-02-11 00:00:00|              3334.6888569539296|2018-02-12 00:00:00|
+|2018-02-08 00:00:00|               3757.228272578487|2018-02-09 00:00:00|
+|2018-02-06 00:00:00|              3262.1929569669637|2018-02-07 00:00:00|
+|2018-02-07 00:00:00|              3347.5609365254863|2018-02-08 00:00:00|
+|2018-02-12 00:00:00|               4161.830326558264|2018-02-13 00:00:00|
+|2018-02-13 00:00:00|              10890.724625592758|2018-02-14 00:00:00|
+|2018-02-04 00:00:00|              2945.9924421968985|2018-02-05 00:00:00|
+|2018-02-09 00:00:00|               3379.331244957616|2018-02-10 00:00:00|
+|2018-02-10 00:00:00|              3256.6051411139615|2018-02-11 00:00:00|
++-------------------+--------------------------------+-------------------+
+"""
+
 # flat = flat.withColumn('var_average_cost_per_item', flat. / flat.)
 
 flat = flat.drop('gender')
@@ -64,7 +91,4 @@ flat = flat.drop('order_date')
 
 flat.write.partitionBy("order_date_iso").format("parquet").save("data/flat.parquet")
 flat.write.format("json").save("data/flat.json")
-
-
-
 
