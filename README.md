@@ -14,14 +14,15 @@ Answer for my Data Engineering Challenge
 
 ## Spark
 
-The solution was tested in Spark 2.3.0 (with Hadoop 2.7)
-https://www.apache.org/dyn/closer.lua/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
-The Spark was started as local server (sbin/start_master.sh) with one worker. For production more workers should be added and a true cluster manager (like Yarn)
+* The solution was tested in Spark 2.3.0 (with Hadoop 2.7)
+    * https://www.apache.org/dyn/closer.lua/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
+* The Spark was started as local server (sbin/start_master.sh) with one worker. For production more workers should be added and a true cluster manager (like Yarn)
 
 ## Pre-analysis
+
 Using "head" command I checked the structure of both file:
 
-
+```
 Felipes-iMac:data ftfarias$ head dim.csv
 ,is_banner,is_tax,is_market_place,material_status,current_price_range,cmc_division,cmc_business_unit,gender,product
 0,,,1,,02. 25-50,Marketplace,Marketplace,Unissex,2362269
@@ -45,12 +46,13 @@ Felipes-iMac:data ftfarias$ head fact.csv
 6,15,20180207,20180204,20,23,4082855,,6,1,2018-02-04 00:00:00,2.5,0.98,1.77,2.5,0.05,9
 7,15,20180206,20180111,20,23,3695229,,6,1,2018-01-11 00:00:00,1.29,0.75,0.94,1.29,0.0071428570999999995,1
 8,15,20180212,20180212,20,23,4057131,,6,1,2018-02-12 00:00:00,9.68,4.25,6.31,7.89,0.1,1
-
+```
 
 ## Spark Interactive
 
 I opened a pyspark shell for the first tests with the database, and copying the results to create_flat_file.py as it progressed.
 
+```
 fact = spark.read.load("/Users/ftfarias/projects/Beluga_Challenge/data/fact.csv", format="csv", sep=",", inferSchema="true", header="true")
 fact.show()
 
@@ -93,7 +95,7 @@ root
 
 merged = fact.join(dim, fact.product == dim.product)
 merged.take(10)
-
+```
 ### Gender
 
 The gender field has too many overlapping values, this needs to be reduced to field with at most 5 different values (use your own criteria to deduce this)
@@ -104,63 +106,11 @@ The gender field has too many overlapping values, this needs to be reduced to fi
 
 >>> genders = flat.groupBy('gender').count().sort('count').cache()
 >>> genders.show(100)
-
+```
 +--------------------+-------+
 |              gender|  count|
 +--------------------+-------+
-|Femenino/Infantil...|      1|
-|Bebés/Infantil/Ni...|      1|
-|Femenino/Infantil...|      2|
-|Bebés/Femenino/Ma...|      2|
-|Femenino/Infantil...|      3|
-|  Bebés/Unisex/girls|      4|
-|Infantil/Unisex/U...|      4|
-|Bebés/Infantil/Un...|      4|
-|Bebés/Femenino/girls|      4|
-|Bebés/Infantil/Un...|      6|
-|Masculino/Unisex/...|      6|
-|Masculino/Niñas/N...|      7|
-|Infantil/Unisex I...|      7|
-|Infantil/Niñas/Un...|      8|
-|       Infantil/boys|      9|
-|Niños/Unisex Infa...|      9|
-|Bebés/Niños/Unise...|     11|
-|         Bebés/Niños|     11|
-|Femenino/Infantil...|     12|
-|Bebés/Infantil/girls|     12|
-|     Bebés/Masculino|     13|
-|Femenino/Unisex I...|     13|
-|Femenino/Unisex/b...|     15|
-|Bebés/Femenino/In...|     15|
-|         Unisex/boys|     17|
-|Bebés/Infantil/Ni...|     17|
-|Infantil/Niñas/Ni...|     17|
-|      Bebés/Infantil|     18|
-|  Infantil/Masculino|     19|
-|Bebés/Femenino/Ma...|     22|
-|Bebés/Infantil/Ni...|     22|
-|     Infantil/Unisex|     23|
-|    Bebés/boys/girls|     23|
-|        Bebés/Unisex|     29|
-|Bebés/Unisex Infa...|     29|
-|   Femenino/Infantil|     30|
-|Infantil/Niños/Un...|     33|
-|      Bebés/Femenino|     38|
-|Femenino/Infantil...|     39|
-|Femenino/Infantil...|     43|
-|Bebés/Infantil/Niños|     43|
-|Femenino/Masculin...|     45|
-| Femenino/boys/girls|     46|
-|          Bebés/boys|     47|
-|Femenino/Masculin...|     50|
-|Femenino/Unisex/g...|     52|
-|Bebés/Infantil/Ni...|     52|
-|Unisex/Unisex Inf...|     56|
-|         Bebés/Niñas|     59|
-|Bebés/Unisex/boys...|     61|
-|Bebés/Infantil/Un...|     71|
-| Bebés/Infantil/boys|     96|
-|Bebés/Infantil/Niñas|     99|
+...
 |Bebés/Masculino/boys|    102|
 |   Unisex/boys/girls|    124|
 |        Niños/Unisex|    133|
@@ -196,15 +146,17 @@ The gender field has too many overlapping values, this needs to be reduced to fi
 |           masculino|4405208|
 |            feminino|8847235|
 +--------------------+-------+
+```
 
 Using the count information, the five groups are:
 
+```
 masculino
 feminino
 unisex
 infantil
 bebes
-
+```
 
 ## Running scripts:
 
@@ -212,6 +164,7 @@ bebes
 
 * ~/Downloads/spark/bin/spark-submit create_flat_file.py --master local[*]
 
+```
 The result table can be checked in the data file:
 Felipes-iMac:Beluga_Challenge ftfarias$ ll data/flat.parquet/
 total 8
@@ -229,4 +182,4 @@ drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180210
 drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180211
 drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180212
 drwxr-xr-x  402 ftfarias  staff  13668 Apr 11 10:03 order_date=20180213
-
+```
