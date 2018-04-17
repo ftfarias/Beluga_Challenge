@@ -195,3 +195,27 @@ Felipes-iMac:Beluga_Challenge ftfarias$ head data/flat.json/part-00199-d5fd9bc3-
 
 
 ```
+
+## Extras
+```
+Plot the distribution of the product dimension over the order_date
+for the fact table. What kind of problems could you run into whenever
+parallelizing processing using spark or hadoop using this field as a key?
+How can you resolve such issues?
+```
+
+There are a non-uniform distribution of the values, which can make some servers in the cluster more loaded and
+delay the entire processing. A Surrogate key can help to homogenaze the servers load
+
+The graph of distribution is in notebook
+
+```
+How would you optimize the elasticsearch index taking into account
+that it will not be used for full text search, only for timeseries
+events queries? (mainly aggregations and field value retrieval)
+```
+
+There are few optimizations, first when you do search, you should use
+Round Dates ( [https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html#_search_rounded_dates].
+
+

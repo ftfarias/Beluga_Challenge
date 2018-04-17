@@ -143,3 +143,5 @@ vw_flat.write.format("json").save("data/flat_totais.json")
 # extra question
 product_order = spark.sql("SELECT product, order_date_iso, count(1) as quantidade FROM vw_flat group by product, order_date_iso")
 product_order.write.csv("data/product_order.csv")
+
+
